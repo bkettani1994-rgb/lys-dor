@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THRONE X — The Ultimate Gaming Throne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & BASE ─── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --gold: #C9A84C;
+  --gold-light: #F5C842;
+  --gold-dark: #A07830;
+  --dark: #050505;
+  --dark-2: #0A0A0A;
+  --dark-3: #111111;
+  --dark-4: #1A1A1A;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--dark);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ─── UTILITIES ─── */
+.gold-text {
+  background: linear-gradient(135deg, #C9A84C 0%, #F5C842 50%, #C9A84C 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer { 0%{background-position:0% center} 100%{background-position:200% center} }
+
+.glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(201,168,76,0.1);
+}
+.glass-gold {
+  background: rgba(201,168,76,0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(201,168,76,0.2);
+}
+
+/* ─── LOADER ─── */
+#loader {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--dark);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+#loader.hidden { opacity: 0; visibility: hidden; }
+.loader-ring {
+  width: 72px; height: 72px; position: relative;
+  animation: spin 1.8s linear infinite;
+}
+.loader-ring::before {
+  content:''; position:absolute; inset:0; border-radius:50%;
+  border: 2px solid transparent;
+  border-top-color: var(--gold);
+  border-right-color: var(--gold);
+}
+.loader-ring::after {
+  content:''; position:absolute; inset:6px; border-radius:50%;
+  border: 1px solid transparent;
+  border-bottom-color: rgba(201,168,76,0.4);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loader-letters { display: flex; gap: 2px; }
+.loader-letters span {
+  font-size: 22px; font-weight: 700; letter-spacing: 0.3em;
+  background: linear-gradient(135deg, #C9A84C, #F5C842, #C9A84C);
+  background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  opacity: 0; transform: translateY(10px);
+  animation: letterIn 0.4s ease forwards;
+}
+@keyframes letterIn { to { opacity: 1; transform: translateY(0); } }
+.loader-line {
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  animation: lineExpand 1.5s ease forwards 0.3s;
+  width: 0;
+}
+@keyframes lineExpand { to { width: 200px; } }
+
+/* ─── NAVBAR ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 80px;
+  transition: all 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(5,5,5,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+  padding: 14px 80px;
+}
+.nav-logo {
+  font-size: 18px; font-weight: 700; letter-spacing: 0.2em;
+  cursor: pointer; transition: transform 0.3s ease;
+}
+.nav-logo:hover { transform: scale(1.05); }
+.nav-links { display: flex; gap: 36px; }
+.nav-links a {
+  font-size: 13px; color: rgba(255,255,255,0.55); text-decoration: none;
+  letter-spacing: 0.1em; transition: color 0.3s, transform 0.3s;
+  display: inline-block;
+}
+.nav-links a:hover { color: var(--gold-light); transform: translateY(-1px); }
+.nav-actions { display: flex; align-items: center; gap: 16px; }
+.btn-ghost {
+  font-size: 13px; color: rgba(255,255,255,0.6); background: none; border: none;
+  cursor: pointer; letter-spacing: 0.1em; transition: color 0.3s;
+}
+.btn-ghost:hover { color: var(--gold-light); }
+.btn-gold {
+  padding: 10px 22px; font-size: 13px; font-weight: 700; letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+  color: var(--dark); border: none; border-radius: 100px; cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative; overflow: hidden;
+}
+.btn-gold::after {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.25), transparent);
+  transform: translateX(-100%) skewX(-12deg);
+  transition: transform 0.5s ease;
+}
+.btn-gold:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(201,168,76,0.5); }
+.btn-gold:hover::after { transform: translateX(100%) skewX(-12deg); }
+
+/* ─── HERO ─── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 140px 40px 80px;
+  position: relative; overflow: hidden;
+}
+#hero::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.16) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 600px; height: 600px; border-radius: 50%;
+  background: rgba(201,168,76,0.04); filter: blur(100px);
+  pointer-events: none;
+}
+#particles { position:absolute; inset:0; pointer-events:none; z-index:0; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 18px; border-radius: 100px; margin-bottom: 32px;
+  opacity: 0; transform: translateY(20px);
+  animation: fadeUp 0.8s ease forwards 0.2s;
+  position: relative; z-index: 1;
+}
+.badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold-light); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.3)} }
+.hero-badge span { font-size: 11px; color: var(--gold-light); letter-spacing: 0.3em; text-transform: uppercase; font-weight: 500; }
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(72px, 10vw, 110px);
+  font-weight: 900; line-height: 0.92;
+  margin-bottom: 24px; position: relative; z-index: 1;
+  opacity: 0; transform: translateY(40px);
+  animation: fadeUp 1s ease forwards 0.4s;
+}
+h1 .line1 { display: block; color: #fff; }
+h1 .line2 { display: block; }
+
+.hero-sub {
+  font-size: 17px; color: rgba(255,255,255,0.45);
+  max-width: 480px; line-height: 1.75; margin-bottom: 44px;
+  position: relative; z-index: 1;
+  opacity: 0; transform: translateY(20px);
+  animation: fadeUp 0.8s ease forwards 0.7s;
+}
+
+.cta-row {
+  display: flex; gap: 14px; justify-content: center; margin-bottom: 64px;
+  position: relative; z-index: 1;
+  opacity: 0; transform: translateY(20px);
+  animation: fadeUp 0.8s ease forwards 0.9s;
+}
+.cta-primary {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 34px; font-size: 14px; font-weight: 700; letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+  color: var(--dark); border: none; border-radius: 100px; cursor: pointer;
+  box-shadow: 0 0 40px rgba(201,168,76,0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative; overflow: hidden;
+}
+.cta-primary::after {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: translateX(-100%) skewX(-12deg); transition: transform 0.5s;
+}
+.cta-primary:hover { transform: scale(1.05); box-shadow: 0 0 60px rgba(201,168,76,0.6); }
+.cta-primary:hover::after { transform: translateX(100%) skewX(-12deg); }
+.arrow { transition: transform 0.3s; }
+.cta-primary:hover .arrow { transform: translateX(4px); }
+
+.cta-secondary {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 34px; font-size: 14px; font-weight: 500; letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.65); border: none; border-radius: 100px; cursor: pointer;
+  transition: all 0.3s;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.12);
+}
+.cta-secondary:hover { color: var(--gold-light); border-color: rgba(201,168,76,0.35); transform: scale(1.03); }
+.play-btn { width: 20px; height: 20px; border-radius: 50%; border: 1px solid currentColor; display:flex; align-items:center; justify-content:center; }
+.play-triangle { width:0; height:0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid currentColor; transform: translateX(1px); }
+
+/* ─── CHAIR SVG ─── */
+.chair-wrap {
+  width: min(440px, 90vw); margin: 0 auto 56px;
+  position: relative; z-index: 1;
+  opacity: 0; transform: translateY(60px) scale(0.9);
+  animation: chairIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.1s;
+}
+@keyframes chairIn { to { opacity:1; transform:translateY(0) scale(1); } }
+.chair-float { animation: float 5s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+
+/* ─── STATS ─── */
+.stats-row {
+  display: flex; flex-wrap: wrap; gap: 16px 60px; justify-content: center;
+  position: relative; z-index: 1;
+  opacity: 0; transform: translateY(20px);
+  animation: fadeUp 0.8s ease forwards 1.5s;
+}
+.stat { text-align: center; }
+.stat-val { font-size: 28px; font-weight: 800; }
+.stat-lbl { font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 4px; }
+
+/* ─── SCROLL INDICATOR ─── */
+.scroll-indicator {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; animation: fadeIn 1s ease forwards 2s;
+}
+.scroll-indicator span { font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.4em; text-transform: uppercase; }
+.scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(201,168,76,0.5), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+@keyframes scrollPulse { 0%,100%{transform:scaleY(1);opacity:1} 50%{transform:scaleY(0.6);opacity:0.4} }
+
+/* ─── SECTION COMMON ─── */
+section { padding: 120px 80px; }
+.section-header { text-align: center; margin-bottom: 64px; }
+.section-label { font-size: 11px; color: var(--gold-light); letter-spacing: 0.4em; text-transform: uppercase; font-weight: 500; }
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5vw, 60px); font-weight: 900;
+  color: #fff; margin-top: 12px; margin-bottom: 14px; line-height: 1.1;
+}
+.section-sub { font-size: 15px; color: rgba(255,255,255,0.38); max-width: 380px; margin: 0 auto; }
+
+/* ─── FEATURES ─── */
+#features { background: var(--dark-2); }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; max-width: 1100px; margin: 0 auto; }
+.feat-card {
+  border-radius: 20px; padding: 28px; position: relative; overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s;
+  opacity: 0; transform: translateY(50px);
+}
+.feat-card.visible { opacity: 1; transform: translateY(0); }
+.feat-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 60px rgba(201,168,76,0.08); }
+.feat-card::after {
+  content:''; position:absolute; bottom:0; left:0; height:2px;
+  background: linear-gradient(to right, var(--gold), transparent);
+  width: 0; transition: width 0.4s ease;
+}
+.feat-card:hover::after { width: 100%; }
+.feat-icon {
+  width: 46px; height: 46px; border-radius: 13px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.feat-card:hover .feat-icon { transform: rotate(5deg) scale(1.1); box-shadow: 0 0 20px rgba(201,168,76,0.4); }
+.feat-icon svg { width: 22px; height: 22px; stroke: var(--dark); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.feat-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; transition: color 0.3s; }
+.feat-card:hover .feat-title { color: var(--gold-light); }
+.feat-desc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.65; }
+
+/* ─── SOCIAL PROOF ─── */
+#reviews { position: relative; overflow: hidden; }
+#reviews::before {
+  content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+  width: 600px; height: 300px; border-radius: 50%;
+  background: rgba(201,168,76,0.04); filter: blur(100px); pointer-events:none;
+}
+.badges-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 56px; }
+.trust-badge {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 16px; border-radius: 100px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0; transform: translateX(-20px);
+}
+.trust-badge.visible { opacity:1; transform:translateX(0); }
+.trust-badge:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(201,168,76,0.2); }
+.trust-badge svg { width:14px; height:14px; stroke: var(--gold-light); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.trust-badge span { font-size: 11px; color: rgba(201,168,76,0.8); letter-spacing: 0.05em; }
+.reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+.review-card {
+  border-radius: 20px; padding: 28px; position: relative;
+  transition: transform 0.4s ease;
+  opacity: 0; transform: translateY(40px) scale(0.96);
+}
+.review-card.visible { opacity:1; transform:translateY(0) scale(1); }
+.review-card:hover { transform: translateY(-5px); }
+.review-quote { position:absolute; top:14px; right:20px; font-size:64px; color:rgba(201,168,76,0.08); font-family:'Playfair Display',serif; line-height:1; }
+.stars { display:flex; gap:4px; margin-bottom:16px; }
+.stars svg { width:14px; height:14px; fill:var(--gold-light); stroke:none; }
+.review-text { font-size:13px; color:rgba(255,255,255,0.65); line-height:1.75; margin-bottom:22px; }
+.reviewer { display:flex; align-items:center; gap:12px; }
+.reviewer-avatar {
+  width:40px; height:40px; border-radius:50%; font-size:13px; font-weight:700;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+  color: var(--dark); display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.reviewer-name { font-size:13px; font-weight:600; color:#fff; }
+.reviewer-role { font-size:11px; color:rgba(255,255,255,0.35); margin-top:2px; }
+.review-bottom-line {
+  position:absolute; bottom:0; left:0; right:0; height:1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+  opacity:0; transition: opacity 0.4s;
+}
+.review-card:hover .review-bottom-line { opacity:1; }
+
+/* ─── SHOWCASE ─── */
+#showcase { background: var(--dark-2); }
+.showcase-inner { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; max-width:1100px; margin:0 auto; }
+.showcase-visual { position:relative; aspect-ratio:1; display:flex; align-items:center; justify-content:center; opacity:0; transform:translateX(-60px); transition: all 1s ease; }
+.showcase-visual.visible { opacity:1; transform:translateX(0); }
+.orbit-ring {
+  position:absolute; border-radius:50%;
+  border: 1px solid rgba(201,168,76,0.1);
+}
+.orbit-ring-1 { width:90%; height:90%; animation: orbitCW 30s linear infinite; }
+.orbit-ring-2 { width:68%; height:68%; animation: orbitCCW 20s linear infinite; border-color: rgba(201,168,76,0.06); }
+@keyframes orbitCW { to { transform:rotate(360deg); } }
+@keyframes orbitCCW { to { transform:rotate(-360deg); } }
+.orbit-dot { position:absolute; width:8px; height:8px; border-radius:50%; background:var(--gold-light); top:0; left:50%; transform:translateX(-50%) translateY(-50%); }
+.orbit-dot-2 { position:absolute; width:6px; height:6px; border-radius:50%; background:rgba(201,168,76,0.6); bottom:0; right:0; }
+.showcase-glow { position:absolute; width:200px; height:200px; border-radius:50%; filter:blur(60px); background:rgba(201,168,76,0.12); }
+.showcase-chair { width:80%; position:relative; z-index:1; animation:float 4s ease-in-out infinite; }
+
+.showcase-info { opacity:0; transform:translateX(60px); transition: all 1s ease 0.2s; }
+.showcase-info.visible { opacity:1; transform:translateX(0); }
+.showcase-title { font-size:26px; font-weight:700; color:#fff; margin-bottom:8px; }
+.showcase-desc { font-size:14px; color:rgba(255,255,255,0.4); margin-bottom:32px; line-height:1.7; }
+.color-label { font-size:11px; color:rgba(255,255,255,0.35); letter-spacing:0.3em; text-transform:uppercase; margin-bottom:12px; }
+.color-swatches { display:flex; gap:10px; margin-bottom:6px; }
+.swatch {
+  width:38px; height:38px; border-radius:50%; cursor:pointer;
+  transition: transform 0.3s; border: 2px solid rgba(255,255,255,0.15);
+}
+.swatch:hover, .swatch.active { transform:scale(1.15); border-color: var(--gold-light); box-shadow: 0 0 0 2px rgba(201,168,76,0.3); }
+.color-name { font-size:11px; color:rgba(201,168,76,0.6); margin-bottom:28px; height:16px; }
+.specs-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.spec-item {
+  border-radius:14px; padding:14px 16px;
+  transition: transform 0.3s;
+}
+.spec-item:hover { transform:scale(1.04); }
+.spec-val { font-size:17px; font-weight:700; color:var(--gold-light); }
+.spec-key { font-size:11px; color:rgba(255,255,255,0.35); margin-top:3px; }
+
+/* ─── PRICING ─── */
+#pricing { text-align:center; }
+.urgency-banner {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:10px 22px; border-radius:100px; margin-bottom:52px;
+}
+.urgency-flame { font-size:16px; animation:flicker 1.5s ease-in-out infinite; }
+@keyframes flicker { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.7;transform:scale(0.9)} }
+.urgency-text { font-size:13px; color:var(--gold-light); }
+.timer { display:flex; gap:4px; }
+.timer-unit {
+  background: var(--dark-3); padding:4px 9px; border-radius:7px;
+  font-family:monospace; font-size:13px; font-weight:700; color:var(--gold-light);
+}
+.pricing-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px; max-width:1000px; margin:0 auto; }
+.price-card {
+  border-radius:22px; padding:36px 30px; text-align:left; position:relative;
+  opacity:0; transform:translateY(50px); transition: all 0.7s ease;
+  cursor:pointer;
+}
+.price-card.visible { opacity:1; transform:translateY(0); }
+.price-card:hover { transform:translateY(-8px) scale(1.02); }
+.price-card.highlight {
+  background: linear-gradient(to bottom, rgba(201,168,76,0.14), rgba(10,10,10,0.85));
+  border: 1px solid rgba(201,168,76,0.32);
+}
+.price-card.highlight:hover { box-shadow: 0 20px 60px rgba(201,168,76,0.2); }
+.popular-pill {
+  position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+  padding:5px 16px; border-radius:100px; font-size:10px; font-weight:800;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+  color: var(--dark); letter-spacing:0.15em; white-space:nowrap;
+}
+.price-tier { font-size:10px; color:rgba(201,168,76,0.55); letter-spacing:0.35em; text-transform:uppercase; margin-bottom:6px; }
+.price-amount { font-size:54px; font-weight:900; color:#fff; margin-bottom:4px; }
+.price-desc { font-size:13px; color:rgba(255,255,255,0.35); margin-bottom:24px; }
+.price-feature { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:13px; color:rgba(255,255,255,0.55); }
+.check { width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; background:rgba(201,168,76,0.25); }
+.check-primary { background: var(--gold-light); }
+.check svg { width:9px; height:9px; stroke: var(--dark); fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+.price-btn {
+  width:100%; padding:15px; border-radius:13px; font-weight:700; font-size:13px;
+  letter-spacing:0.1em; margin-top:22px; cursor:pointer; transition:all 0.3s;
+}
+.price-btn-gold { background:linear-gradient(135deg,var(--gold-dark),var(--gold-light)); color:var(--dark); border:none; }
+.price-btn-gold:hover { box-shadow: 0 0 40px rgba(201,168,76,0.5); transform:scale(1.02); }
+.price-btn-glass { background:rgba(255,255,255,0.03); color:rgba(255,255,255,0.65); border:1px solid rgba(201,168,76,0.2); }
+.price-btn-glass:hover { color:var(--gold-light); border-color:rgba(201,168,76,0.5); }
+.price-note { font-size:12px; color:rgba(255,255,255,0.2); margin-top:24px; }
+
+/* ─── FAQ ─── */
+#faq { background: var(--dark-2); }
+.faq-list { max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:10px; }
+.faq-item {
+  border-radius:18px; overflow:hidden;
+  opacity:0; transform:translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.faq-item.visible { opacity:1; transform:translateY(0); }
+.faq-question {
+  width:100%; display:flex; align-items:center; justify-content:space-between;
+  padding:22px 24px; text-align:left; background:none; border:none; cursor:pointer;
+  gap:16px;
+}
+.faq-question span {
+  font-size:15px; font-weight:600; color:rgba(255,255,255,0.78);
+  transition: color 0.3s;
+}
+.faq-item.open .faq-question span { color: var(--gold-light); }
+.faq-toggle {
+  width:28px; height:28px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.5);
+  transition: all 0.3s; font-size:18px; font-weight:300; line-height:1;
+}
+.faq-item.open .faq-toggle { background:var(--gold-light); color:var(--dark); transform:rotate(45deg); }
+.faq-answer {
+  max-height:0; overflow:hidden; transition: max-height 0.4s ease, padding 0.4s ease;
+  padding:0 24px; font-size:13px; color:rgba(255,255,255,0.48); line-height:1.75;
+  border-top: 1px solid rgba(255,255,255,0);
+}
+.faq-item.open .faq-answer {
+  max-height:200px; padding:0 24px 22px;
+  border-top-color: rgba(255,255,255,0.05);
+}
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 80px 80px 40px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+}
+footer::before {
+  content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+  width:800px; height:1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+}
+.footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:60px; margin-bottom:60px; }
+.footer-brand { font-size:21px; font-weight:700; letter-spacing:0.2em; margin-bottom:14px; cursor:pointer; }
+.footer-tagline { font-size:13px; color:rgba(255,255,255,0.32); line-height:1.75; max-width:260px; margin-bottom:22px; }
+.social-row { display:flex; gap:8px; }
+.social-btn {
+  width:34px; height:34px; border-radius:50%;
+  background:rgba(255,255,255,0.03); border:1px solid rgba(201,168,76,0.12);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  transition: all 0.3s; color:rgba(255,255,255,0.35);
+  text-decoration:none;
+}
+.social-btn svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.social-btn:hover { color:var(--gold-light); border-color:rgba(201,168,76,0.4); transform:translateY(-3px); }
+.footer-col-title { font-size:10px; color:rgba(201,168,76,0.5); letter-spacing:0.35em; text-transform:uppercase; font-weight:600; margin-bottom:18px; }
+.footer-col a { display:flex; align-items:center; gap:4px; font-size:13px; color:rgba(255,255,255,0.32); text-decoration:none; margin-bottom:12px; transition: all 0.3s; }
+.footer-col a:hover { color:var(--gold-light); transform:translateX(4px); }
+.footer-bottom { display:flex; justify-content:space-between; align-items:center; padding-top:28px; border-top:1px solid rgba(255,255,255,0.05); }
+.footer-copy { font-size:12px; color:rgba(255,255,255,0.2); }
+.footer-legal { display:flex; gap:20px; }
+.footer-legal a { font-size:12px; color:rgba(255,255,255,0.2); text-decoration:none; transition:color 0.3s; }
+.footer-legal a:hover { color:var(--gold-light); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { to { opacity:1; } }
+
+/* Transition for items appearing on scroll */
+.feat-card { transition: opacity 0.7s ease, transform 0.7s ease; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width:900px) {
+  nav { padding:20px 24px; }
+  nav.scrolled { padding:12px 24px; }
+  .nav-links { display:none; }
+  section { padding:80px 24px; }
+  .showcase-inner { grid-template-columns:1fr; gap:40px; }
+  .showcase-visual { max-width:320px; margin:0 auto; }
+  footer { padding:60px 24px 30px; }
+  .footer-grid { grid-template-columns:1fr 1fr; gap:32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-ring"></div>
+  <div class="loader-letters">
+    <span style="animation-delay:0.4s">T</span>
+    <span style="animation-delay:0.46s">H</span>
+    <span style="animation-delay:0.52s">R</span>
+    <span style="animation-delay:0.58s">O</span>
+    <span style="animation-delay:0.64s">N</span>
+    <span style="animation-delay:0.70s">E</span>
+    <span style="animation-delay:0.76s; margin-left:8px"> </span>
+    <span style="animation-delay:0.82s">X</span>
+  </div>
+  <div class="loader-line"></div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-logo gold-text">THRONE X</div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#showcase">Showcase</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-ghost">Sign In</button>
+    <button class="btn-gold">Order Now</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="particles"></canvas>
+  <div class="hero-glow"></div>
+
+  <div class="hero-badge glass-gold">
+    <div class="badge-dot"></div>
+    <span>Limited Edition 2024</span>
+  </div>
+
+  <h1>
+    <span class="line1">REIGN</span>
+    <span class="line2 gold-text">SUPREME</span>
+  </h1>
+
+  <p class="hero-sub">Engineered for elite performance. Crafted for those who demand nothing less than absolute dominance.</p>
+
+  <div class="cta-row">
+    <button class="cta-primary">
+      Claim Your Throne
+      <span class="arrow">→</span>
+    </button>
+    <button class="cta-secondary">
+      Watch Film
+      <span class="play-btn"><span class="play-triangle"></span></span>
+    </button>
+  </div>
+
+  <!-- Chair SVG -->
+  <div class="chair-wrap">
+    <svg class="chair-float" id="heroChair" viewBox="0 0 500 480" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 20px 80px rgba(201,168,76,0.3))">
+      <defs>
+        <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A84C"/><stop offset="50%" stop-color="#F5C842"/><stop offset="100%" stop-color="#A07830"/></linearGradient>
+        <linearGradient id="hd" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1A1A1A"/><stop offset="100%" stop-color="#060606"/></linearGradient>
+        <radialGradient id="hs" cx="50%" cy="100%" r="40%"><stop offset="0%" stop-color="#C9A84C" stop-opacity="0.35"/><stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/></radialGradient>
+      </defs>
+      <ellipse cx="250" cy="462" rx="165" ry="17" fill="url(#hs)"/>
+      <rect x="244" y="400" width="12" height="52" rx="6" fill="url(#hg)"/>
+      <rect x="244" y="400" width="12" height="52" rx="6" fill="url(#hg)" transform="rotate(72,250,430)"/>
+      <rect x="244" y="400" width="12" height="52" rx="6" fill="url(#hg)" transform="rotate(144,250,430)"/>
+      <rect x="244" y="400" width="12" height="52" rx="6" fill="url(#hg)" transform="rotate(216,250,430)"/>
+      <rect x="244" y="400" width="12" height="52" rx="6" fill="url(#hg)" transform="rotate(288,250,430)"/>
+      <circle cx="250" cy="388" r="8" fill="#111" stroke="#C9A84C" stroke-width="1.5"/>
+      <circle cx="299" cy="408" r="8" fill="#111" stroke="#C9A84C" stroke-width="1.5"/>
+      <circle cx="279" cy="445" r="8" fill="#111" stroke="#C9A84C" stroke-width="1.5"/>
+      <circle cx="221" cy="445" r="8" fill="#111" stroke="#C9A84C" stroke-width="1.5"/>
+      <circle cx="201" cy="408" r="8" fill="#111" stroke="#C9A84C" stroke-width="1.5"/>
+      <rect x="238" y="338" width="24" height="72" rx="8" fill="url(#hg)"/>
+      <rect x="128" y="288" width="244" height="57" rx="21" fill="url(#hd)" stroke="#C9A84C" stroke-width="1.5"/>
+      <rect x="138" y="294" width="224" height="20" rx="10" fill="rgba(201,168,76,0.1)"/>
+      <rect x="143" y="98" width="214" height="202" rx="21" fill="url(#hd)" stroke="#C9A84C" stroke-width="1.5"/>
+      <rect x="153" y="112" width="194" height="174" rx="15" fill="rgba(201,168,76,0.04)"/>
+      <rect x="241" y="108" width="18" height="184" rx="9" fill="url(#hg)" opacity="0.82"/>
+      <rect x="163" y="58" width="174" height="62" rx="21" fill="url(#hd)" stroke="#C9A84C" stroke-width="1.5"/>
+      <rect x="173" y="66" width="154" height="46" rx="15" fill="rgba(201,168,76,0.06)"/>
+      <rect x="97" y="252" width="48" height="57" rx="13" fill="url(#hd)" stroke="#C9A84C" stroke-width="1.5"/>
+      <rect x="355" y="252" width="48" height="57" rx="13" fill="url(#hd)" stroke="#C9A84C" stroke-width="1.5"/>
+      <text x="250" y="208" text-anchor="middle" fill="url(#hg)" font-size="20" font-family="serif" font-weight="bold" opacity="0.55">TX</text>
+      <ellipse cx="250" cy="288" rx="125" ry="28" fill="none" stroke="#C9A84C" stroke-width="0.5" opacity="0.18"/>
+    </svg>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-val gold-text">50K+</div><div class="stat-lbl">Elite Gamers</div></div>
+    <div class="stat"><div class="stat-val gold-text">4.9★</div><div class="stat-lbl">Average Rating</div></div>
+    <div class="stat"><div class="stat-val gold-text">10yr</div><div class="stat-lbl">Warranty</div></div>
+    <div class="stat"><div class="stat-val gold-text">#1</div><div class="stat-lbl">Gaming Chair 2024</div></div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-header">
+    <div class="section-label">Engineering</div>
+    <div class="section-title">Built for <span class="gold-text">Dominance</span></div>
+    <div class="section-sub">Every feature engineered to give you the competitive edge.</div>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card glass" style="transition-delay:0s">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <div class="feat-title">Royal Ergonomics</div>
+      <div class="feat-desc">Contoured lumbar support and 4D adjustable armrests for 12-hour gaming sessions without fatigue.</div>
+    </div>
+    <div class="feat-card glass" style="transition-delay:0.1s">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div class="feat-title">Zero-Gravity Tilt</div>
+      <div class="feat-desc">Recline 135° with synchronized tilt mechanism that moves with your body like a second skin.</div>
+    </div>
+    <div class="feat-card glass" style="transition-delay:0.2s">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="feat-title">Fortress Build</div>
+      <div class="feat-desc">Military-grade steel frame with carbon fiber reinforcement. Built to last a decade of intense use.</div>
+    </div>
+    <div class="feat-card glass" style="transition-delay:0.3s">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></div>
+      <div class="feat-title">Cold Climate Mesh</div>
+      <div class="feat-desc">4D breathable mesh keeps you 12°C cooler during intense sessions. No more sweaty back.</div>
+    </div>
+    <div class="feat-card glass" style="transition-delay:0.4s">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+      <div class="feat-title">Memory Foam Elite</div>
+      <div class="feat-desc">3-layer NASA-inspired memory foam molds to your exact body shape within 60 seconds.</div>
+    </div>
+    <div class="feat-card glass" style="transition-delay:0.5s">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <div class="feat-title">Posture Analytics</div>
+      <div class="feat-desc">Built-in posture sensor syncs with our app to track and optimize your sitting position in real-time.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section id="reviews">
+  <div class="section-header">
+    <div class="section-label">The Elite Speak</div>
+    <div class="section-title">Trusted by <span class="gold-text">Champions</span></div>
+  </div>
+  <div class="badges-row">
+    <div class="trust-badge glass-gold"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg><span>Product of the Year 2024</span></div>
+    <div class="trust-badge glass-gold"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>50,000+ Elite Users</span></div>
+    <div class="trust-badge glass-gold"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>#1 Best Seller Gaming</span></div>
+    <div class="trust-badge glass-gold"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>4.9/5 Average Rating</span></div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card glass" style="transition-delay:0s">
+      <div class="review-quote">"</div>
+      <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="review-text">"I've tried every premium chair on the market. THRONE X is in a completely different league. My win rate literally went up after switching."</div>
+      <div class="reviewer"><div class="reviewer-avatar">MC</div><div><div class="reviewer-name">Marcus Chen</div><div class="reviewer-role">Pro Esports Player — Team Nexus</div></div></div>
+      <div class="review-bottom-line"></div>
+    </div>
+    <div class="review-card glass" style="transition-delay:0.15s">
+      <div class="review-quote">"</div>
+      <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="review-text">"The posture analytics alone are worth it. After 6-hour streams I'm not wrecked anymore. This chair literally changed my career."</div>
+      <div class="reviewer"><div class="reviewer-avatar">SR</div><div><div class="reviewer-name">Sofia Reyes</div><div class="reviewer-role">Content Creator — 2.4M subs</div></div></div>
+      <div class="review-bottom-line"></div>
+    </div>
+    <div class="review-card glass" style="transition-delay:0.3s">
+      <div class="review-quote">"</div>
+      <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="review-text">"When you sit in this chair you understand immediately. It's not a gaming chair. It's a performance tool that happens to look insane."</div>
+      <div class="reviewer"><div class="reviewer-avatar">JM</div><div><div class="reviewer-name">Jake Morrison</div><div class="reviewer-role">Game Developer @ Riot Games</div></div></div>
+      <div class="review-bottom-line"></div>
+    </div>
+    <div class="review-card glass" style="transition-delay:0.45s">
+      <div class="review-quote">"</div>
+      <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="review-text">"The zero-gravity tilt during 24h marathons is game-changing. Zero backache. Pure focus. Worth every single cent."</div>
+      <div class="reviewer"><div class="reviewer-avatar">AP</div><div><div class="reviewer-name">Aisha Patel</div><div class="reviewer-role">Speedrunner — World Record Holder</div></div></div>
+      <div class="review-bottom-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE -->
+<section id="showcase">
+  <div class="section-header">
+    <div class="section-label">Design</div>
+    <div class="section-title">Obsessive <span class="gold-text">Craftsmanship</span></div>
+  </div>
+  <div class="showcase-inner">
+    <div class="showcase-visual" id="showcaseVisual">
+      <div class="orbit-ring orbit-ring-1"><div class="orbit-dot"></div></div>
+      <div class="orbit-ring orbit-ring-2"><div class="orbit-dot-2"></div></div>
+      <div class="showcase-glow" id="showcaseGlow"></div>
+      <svg class="showcase-chair" id="showcaseChair" viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 16px 50px rgba(201,168,76,0.25))">
+        <defs>
+          <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A84C" id="sgStop1"/><stop offset="100%" stop-color="#A07830" id="sgStop2"/></linearGradient>
+          <linearGradient id="sd" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1A1A1A"/><stop offset="100%" stop-color="#050505"/></linearGradient>
+        </defs>
+        <rect x="194" y="350" width="12" height="45" rx="6" fill="url(#sg)"/><rect x="194" y="350" width="12" height="45" rx="6" fill="url(#sg)" transform="rotate(72,200,375)"/><rect x="194" y="350" width="12" height="45" rx="6" fill="url(#sg)" transform="rotate(144,200,375)"/><rect x="194" y="350" width="12" height="45" rx="6" fill="url(#sg)" transform="rotate(216,200,375)"/><rect x="194" y="350" width="12" height="45" rx="6" fill="url(#sg)" transform="rotate(288,200,375)"/>
+        <circle cx="200" cy="337" r="7" fill="#111" stroke-width="1.5" id="swColor"/><circle cx="240" cy="350" r="7" fill="#111" stroke-width="1.5" id="swColor2"/><circle cx="224" cy="377" r="7" fill="#111" stroke-width="1.5" id="swColor3"/><circle cx="176" cy="377" r="7" fill="#111" stroke-width="1.5" id="swColor4"/><circle cx="160" cy="350" r="7" fill="#111" stroke-width="1.5" id="swColor5"/>
+        <rect x="188" y="300" width="24" height="58" rx="8" fill="url(#sg)"/>
+        <rect x="100" y="255" width="200" height="50" rx="18" fill="url(#sd)" stroke-width="1.5" id="sdColor"/>
+        <rect x="110" y="260" width="180" height="18" rx="9" fill="rgba(201,168,76,0.1)"/>
+        <rect x="115" y="65" width="170" height="200" rx="18" fill="url(#sd)" stroke-width="1.5" id="sdColor2"/>
+        <rect x="125" y="75" width="150" height="180" rx="12" fill="rgba(255,255,255,0.02)"/>
+        <rect x="194" y="72" width="12" height="185" rx="6" fill="url(#sg)" opacity="0.72"/>
+        <rect x="135" y="35" width="130" height="50" rx="18" fill="url(#sd)" stroke-width="1.5" id="sdColor3"/>
+        <rect x="78" y="220" width="38" height="48" rx="10" fill="url(#sd)" stroke-width="1.5" id="sdColor4"/>
+        <rect x="284" y="220" width="38" height="48" rx="10" fill="url(#sd)" stroke-width="1.5" id="sdColor5"/>
+        <text x="200" y="170" text-anchor="middle" font-size="15" font-family="serif" font-weight="bold" opacity="0.5" id="txLabel" fill="url(#sg)">TX</text>
+      </svg>
+    </div>
+    <div class="showcase-info" id="showcaseInfo">
+      <div class="showcase-title">THRONE X — Pro Series</div>
+      <div class="showcase-desc">Every component handpicked. Every measurement validated by professional ergonomists and elite esports athletes.</div>
+      <div class="color-label">Select Colorway</div>
+      <div class="color-swatches">
+        <div class="swatch active" data-color="#C9A84C" data-name="Obsidian Gold" style="background:#C9A84C" onclick="setColor(this)"></div>
+        <div class="swatch" data-color="#888888" data-name="Midnight Chrome" style="background:#888" onclick="setColor(this)"></div>
+        <div class="swatch" data-color="#C0392B" data-name="Blood Red" style="background:#C0392B" onclick="setColor(this)"></div>
+      </div>
+      <div class="color-name" id="colorName">Obsidian Gold</div>
+      <div class="specs-grid">
+        <div class="spec-item glass"><div class="spec-val">180 kg</div><div class="spec-key">Weight Capacity</div></div>
+        <div class="spec-item glass"><div class="spec-val">90°–135°</div><div class="spec-key">Recline Range</div></div>
+        <div class="spec-item glass"><div class="spec-val">56 cm</div><div class="spec-key">Seat Width</div></div>
+        <div class="spec-item glass"><div class="spec-val">Steel + Carbon</div><div class="spec-key">Frame Material</div></div>
+        <div class="spec-item glass"><div class="spec-val">65D Memory</div><div class="spec-key">Foam Density</div></div>
+        <div class="spec-item glass"><div class="spec-val">10 Years</div><div class="spec-key">Warranty</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-header">
+    <div class="section-label">Invest in Excellence</div>
+    <div class="section-title">Choose Your <span class="gold-text">Throne</span></div>
+  </div>
+  <div class="urgency-banner glass-gold">
+    <span class="urgency-flame">🔥</span>
+    <span class="urgency-text">Launch price ends in</span>
+    <div class="timer">
+      <span class="timer-unit" id="timerH">04h</span>
+      <span class="timer-unit" id="timerM">17m</span>
+      <span class="timer-unit" id="timerS">32s</span>
+    </div>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card glass" style="transition-delay:0s">
+      <div class="price-tier">Core</div>
+      <div class="price-amount">$499</div>
+      <div class="price-desc">The entry to excellence</div>
+      <div class="price-feature"><div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Steel frame construction</div>
+      <div class="price-feature"><div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>2D memory foam seat</div>
+      <div class="price-feature"><div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Adjustable lumbar support</div>
+      <div class="price-feature"><div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>2-year warranty</div>
+      <button class="price-btn price-btn-glass">Order Core</button>
+    </div>
+    <div class="price-card highlight" style="transition-delay:0.15s">
+      <div class="popular-pill">MOST POPULAR</div>
+      <div class="price-tier">Pro</div>
+      <div class="price-amount">$899</div>
+      <div class="price-desc">The throne of champions</div>
+      <div class="price-feature"><div class="check check-primary"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Carbon-reinforced steel frame</div>
+      <div class="price-feature"><div class="check check-primary"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>3-layer NASA memory foam</div>
+      <div class="price-feature"><div class="check check-primary"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>4D adjustable armrests</div>
+      <div class="price-feature"><div class="check check-primary"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Posture analytics app</div>
+      <div class="price-feature"><div class="check check-primary"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Zero-gravity tilt system</div>
+      <div class="price-feature"><div class="check check-primary"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>10-year warranty</div>
+      <button class="price-btn price-btn-gold">Claim Your Throne</button>
+    </div>
+    <div class="price-card glass" style="transition-delay:0.3s">
+      <div class="price-tier">Elite</div>
+      <div class="price-amount">$1299</div>
+      <div class="price-desc">Reserved for the few</div>
+      <div class="price-feature"><div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Everything in Pro</div>
+      <div class="price-feature"><div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Hand-stitched leather finish</div>
+      <div class="price-feature"><div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>White-glove delivery & setup</div>
+      <div class="price-feature"><div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Custom colorway option</div>
+      <div class="price-feature"><div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Lifetime warranty</div>
+      <button class="price-btn price-btn-glass">Request Elite Access</button>
+    </div>
+  </div>
+  <div class="price-note">Free shipping worldwide · 30-day no-questions returns · Secure checkout</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-header">
+    <div class="section-label">Questions</div>
+    <div class="section-title">Got <span class="gold-text">Questions?</span></div>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item glass"><button class="faq-question" onclick="toggleFaq(this)"><span>How long does delivery take?</span><div class="faq-toggle">+</div></button><div class="faq-answer">Standard delivery is 5–7 business days. Elite tier orders include white-glove delivery with setup, scheduled at your convenience within 48 hours of dispatch.</div></div>
+    <div class="faq-item glass"><button class="faq-question" onclick="toggleFaq(this)"><span>What's the return policy?</span><div class="faq-toggle">+</div></button><div class="faq-answer">We offer a full 30-day no-questions return policy. If you don't love it, we pick it up at our expense and refund you in full within 48 hours.</div></div>
+    <div class="faq-item glass"><button class="faq-question" onclick="toggleFaq(this)"><span>Is assembly difficult?</span><div class="faq-toggle">+</div></button><div class="faq-answer">THRONE X assembles in under 15 minutes with our tool-free snap system. Every chair ships with a step-by-step guide and QR video instructions.</div></div>
+    <div class="faq-item glass"><button class="faq-question" onclick="toggleFaq(this)"><span>Does it fit taller/heavier users?</span><div class="faq-toggle">+</div></button><div class="faq-answer">The THRONE X Pro supports users up to 180kg and 200cm tall. The seat depth, back height, and armrests are all independently adjustable for a perfect custom fit.</div></div>
+    <div class="faq-item glass"><button class="faq-question" onclick="toggleFaq(this)"><span>How does the posture analytics work?</span><div class="faq-toggle">+</div></button><div class="faq-answer">A discreet sensor in the lumbar support connects to our iOS/Android app via Bluetooth. It tracks your posture in real-time and sends gentle vibration alerts when you slouch.</div></div>
+    <div class="faq-item glass"><button class="faq-question" onclick="toggleFaq(this)"><span>Can I upgrade my chair later?</span><div class="faq-toggle">+</div></button><div class="faq-answer">Yes. We offer a modular upgrade program. You can swap the seat foam, mesh back, and armrests anytime. Elite members get a 40% upgrade credit.</div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand gold-text">THRONE X</div>
+      <div class="footer-tagline">The world's most advanced gaming chair. Engineered for those who refuse to accept second place.</div>
+      <div class="social-row">
+        <a class="social-btn" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
+        <a class="social-btn" href="#"><svg viewBox="0 0 24 24"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16M5 19a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg></a>
+        <a class="social-btn" href="#"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+        <a class="social-btn" href="#"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Product</div>
+      <a href="#">Features</a><a href="#">Specifications</a><a href="#">Colors</a><a href="#">Compare</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Support</div>
+      <a href="#">FAQ</a><a href="#">Warranty</a><a href="#">Returns</a><a href="#">Contact</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Company</div>
+      <a href="#">About</a><a href="#">Press</a><a href="#">Careers</a><a href="#">Partners</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 THRONE X. All rights reserved.</div>
+    <div class="footer-legal"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+  </div>
+</footer>
+
+<script>
+// ─── LOADER ───
+setTimeout(() => {
+  document.getElementById('loader').classList.add('hidden');
+}, 2300);
+
+// ─── NAVBAR SCROLL ───
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ─── PARTICLES ───
+(function(){
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for(let i=0;i<80;i++){
+    particles.push({
+      x: Math.random()*window.innerWidth,
+      y: Math.random()*window.innerHeight,
+      vx: (Math.random()-0.5)*0.35,
+      vy: (Math.random()-0.5)*0.35,
+      a: Math.random()*0.45+0.08,
+      r: Math.random()*2+0.4
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(201,168,76,${p.a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ─── PARALLAX HERO ───
+window.addEventListener('scroll', () => {
+  const hero = document.getElementById('hero');
+  const scrolled = window.scrollY;
+  const heroH = hero.offsetHeight;
+  if(scrolled < heroH) {
+    const progress = scrolled / heroH;
+    hero.style.transform = `translateY(${scrolled * 0.4}px)`;
+    hero.style.opacity = 1 - progress * 1.2;
+  }
+});
+
+// ─── SCROLL REVEAL ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '-60px' });
+
+document.querySelectorAll('.feat-card, .trust-badge, .review-card, .price-card, .faq-item').forEach(el => observer.observe(el));
+
+// Showcase
+const showcaseObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      document.getElementById('showcaseVisual').classList.add('visible');
+      document.getElementById('showcaseInfo').classList.add('visible');
+    }
+  });
+}, { threshold: 0.2 });
+showcaseObserver.observe(document.getElementById('showcase'));
+
+// ─── SHOWCASE COLOR PICKER ───
+const colors = {
+  '#C9A84C': { light: '#F5C842', name: 'Obsidian Gold' },
+  '#888888': { light: '#AAAAAA', name: 'Midnight Chrome' },
+  '#C0392B': { light: '#E74C3C', name: 'Blood Red' }
+};
+
+function setColor(swatch) {
+  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+  swatch.classList.add('active');
+  const c = swatch.dataset.color;
+  const info = colors[c];
+  document.getElementById('colorName').textContent = info.name;
+  document.getElementById('showcaseGlow').style.background = `${c}22`;
+
+  // Update SVG gradients
+  document.getElementById('sgStop1').setAttribute('stop-color', info.light);
+  document.getElementById('sgStop2').setAttribute('stop-color', c);
+
+  // Update stroke colors
+  ['sdColor','sdColor2','sdColor3','sdColor4','sdColor5'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.setAttribute('stroke', c);
+  });
+  ['swColor','swColor2','swColor3','swColor4','swColor5'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.setAttribute('stroke', c);
+  });
+}
+
+// ─── FAQ TOGGLE ───
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+
+// ─── COUNTDOWN TIMER ───
+let seconds = 4 * 3600 + 17 * 60 + 32;
+setInterval(() => {
+  if(seconds <= 0) return;
+  seconds--;
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  document.getElementById('timerH').textContent = String(h).padStart(2,'0')+'h';
+  document.getElementById('timerM').textContent = String(m).padStart(2,'0')+'m';
+  document.getElementById('timerS').textContent = String(s).padStart(2,'0')+'s';
+}, 1000);
+</script>
+</body>
+</html>
