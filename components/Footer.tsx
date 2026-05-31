@@ -1,12 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
-import { Twitter, Instagram, Youtube, Twitch, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Globe, Rss, Play, Gamepad2 } from "lucide-react";
 
 const socials = [
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Youtube, href: "#", label: "YouTube" },
-  { icon: Twitch, href: "#", label: "Twitch" },
+  { icon: Globe, href: "#", label: "Twitter" },
+  { icon: Rss, href: "#", label: "Instagram" },
+  { icon: Play, href: "#", label: "YouTube" },
+  { icon: Gamepad2, href: "#", label: "Twitch" },
 ];
 
 const links = {
