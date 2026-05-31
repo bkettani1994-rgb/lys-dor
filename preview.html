@@ -727,33 +727,22 @@ footer::before {
       <div class="orbit-ring orbit-ring-1"><div class="orbit-dot"></div></div>
       <div class="orbit-ring orbit-ring-2"><div class="orbit-dot-2"></div></div>
       <div class="showcase-glow" id="showcaseGlow"></div>
-      <svg class="showcase-chair" id="showcaseChair" viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 16px 50px rgba(201,168,76,0.25))">
-        <defs>
-          <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A84C" id="sgStop1"/><stop offset="100%" stop-color="#A07830" id="sgStop2"/></linearGradient>
-          <linearGradient id="sd" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1A1A1A"/><stop offset="100%" stop-color="#050505"/></linearGradient>
-        </defs>
-        <rect x="194" y="350" width="12" height="45" rx="6" fill="url(#sg)"/><rect x="194" y="350" width="12" height="45" rx="6" fill="url(#sg)" transform="rotate(72,200,375)"/><rect x="194" y="350" width="12" height="45" rx="6" fill="url(#sg)" transform="rotate(144,200,375)"/><rect x="194" y="350" width="12" height="45" rx="6" fill="url(#sg)" transform="rotate(216,200,375)"/><rect x="194" y="350" width="12" height="45" rx="6" fill="url(#sg)" transform="rotate(288,200,375)"/>
-        <circle cx="200" cy="337" r="7" fill="#111" stroke-width="1.5" id="swColor"/><circle cx="240" cy="350" r="7" fill="#111" stroke-width="1.5" id="swColor2"/><circle cx="224" cy="377" r="7" fill="#111" stroke-width="1.5" id="swColor3"/><circle cx="176" cy="377" r="7" fill="#111" stroke-width="1.5" id="swColor4"/><circle cx="160" cy="350" r="7" fill="#111" stroke-width="1.5" id="swColor5"/>
-        <rect x="188" y="300" width="24" height="58" rx="8" fill="url(#sg)"/>
-        <rect x="100" y="255" width="200" height="50" rx="18" fill="url(#sd)" stroke-width="1.5" id="sdColor"/>
-        <rect x="110" y="260" width="180" height="18" rx="9" fill="rgba(201,168,76,0.1)"/>
-        <rect x="115" y="65" width="170" height="200" rx="18" fill="url(#sd)" stroke-width="1.5" id="sdColor2"/>
-        <rect x="125" y="75" width="150" height="180" rx="12" fill="rgba(255,255,255,0.02)"/>
-        <rect x="194" y="72" width="12" height="185" rx="6" fill="url(#sg)" opacity="0.72"/>
-        <rect x="135" y="35" width="130" height="50" rx="18" fill="url(#sd)" stroke-width="1.5" id="sdColor3"/>
-        <rect x="78" y="220" width="38" height="48" rx="10" fill="url(#sd)" stroke-width="1.5" id="sdColor4"/>
-        <rect x="284" y="220" width="38" height="48" rx="10" fill="url(#sd)" stroke-width="1.5" id="sdColor5"/>
-        <text x="200" y="170" text-anchor="middle" font-size="15" font-family="serif" font-weight="bold" opacity="0.5" id="txLabel" fill="url(#sg)">TX</text>
-      </svg>
+      <div style="position:relative;z-index:1;width:85%;animation:float 4s ease-in-out infinite;">
+        <img id="chairImg"
+          src="https://res.cloudinary.com/diptsoc4h/image/upload/v1780244578/2_igya1m.png"
+          alt="THRONE X Gaming Chair"
+          style="width:100%;display:block;object-fit:contain;filter:drop-shadow(0 20px 60px rgba(201,168,76,0.35));transition:opacity 0.4s ease,filter 0.5s ease;"
+        />
+      </div>
     </div>
     <div class="showcase-info" id="showcaseInfo">
       <div class="showcase-title">THRONE X — Pro Series</div>
       <div class="showcase-desc">Every component handpicked. Every measurement validated by professional ergonomists and elite esports athletes.</div>
       <div class="color-label">Select Colorway</div>
       <div class="color-swatches">
-        <div class="swatch active" data-color="#C9A84C" data-name="Obsidian Gold" style="background:#C9A84C" onclick="setColor(this)"></div>
-        <div class="swatch" data-color="#888888" data-name="Midnight Chrome" style="background:#888" onclick="setColor(this)"></div>
-        <div class="swatch" data-color="#C0392B" data-name="Blood Red" style="background:#C0392B" onclick="setColor(this)"></div>
+        <div class="swatch active" data-color="#C9A84C" data-name="Obsidian Gold" data-img="https://res.cloudinary.com/diptsoc4h/image/upload/v1780244578/2_igya1m.png" style="background:#C9A84C" onclick="setColor(this)"></div>
+        <div class="swatch" data-color="#888888" data-name="Midnight Chrome" data-img="https://res.cloudinary.com/diptsoc4h/image/upload/v1780244583/1_ftjf2c.png" style="background:#888" onclick="setColor(this)"></div>
+        <div class="swatch" data-color="#C0392B" data-name="Blood Red" data-img="https://res.cloudinary.com/diptsoc4h/image/upload/v1780244579/3_udomqp.png" style="background:#C0392B" onclick="setColor(this)"></div>
       </div>
       <div class="color-name" id="colorName">Obsidian Gold</div>
       <div class="specs-grid">
@@ -956,33 +945,26 @@ const showcaseObserver = new IntersectionObserver((entries) => {
 showcaseObserver.observe(document.getElementById('showcase'));
 
 // ─── SHOWCASE COLOR PICKER ───
-const colors = {
-  '#C9A84C': { light: '#F5C842', name: 'Obsidian Gold' },
-  '#888888': { light: '#AAAAAA', name: 'Midnight Chrome' },
-  '#C0392B': { light: '#E74C3C', name: 'Blood Red' }
-};
-
 function setColor(swatch) {
   document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
   swatch.classList.add('active');
   const c = swatch.dataset.color;
-  const info = colors[c];
-  document.getElementById('colorName').textContent = info.name;
+  const img = swatch.dataset.img;
+  const name = swatch.dataset.name;
+
+  document.getElementById('colorName').textContent = name;
   document.getElementById('showcaseGlow').style.background = `${c}22`;
 
-  // Update SVG gradients
-  document.getElementById('sgStop1').setAttribute('stop-color', info.light);
-  document.getElementById('sgStop2').setAttribute('stop-color', c);
-
-  // Update stroke colors
-  ['sdColor','sdColor2','sdColor3','sdColor4','sdColor5'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.setAttribute('stroke', c);
-  });
-  ['swColor','swColor2','swColor3','swColor4','swColor5'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.setAttribute('stroke', c);
-  });
+  // Swap chair image with fade
+  const chairImg = document.getElementById('chairImg');
+  chairImg.style.opacity = '0';
+  chairImg.style.filter = `drop-shadow(0 20px 60px ${c}55)`;
+  setTimeout(() => {
+    chairImg.src = img;
+    chairImg.onload = () => { chairImg.style.opacity = '1'; };
+    // fallback in case already cached
+    if(chairImg.complete) chairImg.style.opacity = '1';
+  }, 200);
 }
 
 // ─── FAQ TOGGLE ───
